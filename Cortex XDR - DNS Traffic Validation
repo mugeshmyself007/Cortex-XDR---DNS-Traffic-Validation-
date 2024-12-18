@@ -1,0 +1,9 @@
+config case_sensitive = false
+| preset= network_story 
+| filter dns_query_name contains "example.com"
+| arrayexpand dns_resolutions
+| alter DNS_Expand_Name=json_extract(dns_resolutions, "$.name")
+| alter DNS_Expand_Type=json_extract(dns_resolutions, "$.type")
+| alter DNS_Expand_Value=json_extract(dns_resolutions, "$.value")
+| fields DNS_Expand_Name , dns_query_type , DNS_Expand_Value , dns_reply_code , agent_hostname , action_local_ip , action_remote_ip , *
+| sort desc _time
